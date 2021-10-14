@@ -1,0 +1,239 @@
+:root{
+	--dark:var(--bs-dark);
+}
+
+body{
+	height: 100vh;
+	display: flex;flex-direction: column;
+}
+.map {
+	height: 100%;
+	width: 100%;
+}
+	#map-generaciones{
+		height: 750px;
+	}
+
+nav{
+	max-height: 3em;
+}
+#inicio{
+	display: grid;
+	grid-template: "a b" "c c" "d e" "f ." "g g";
+	gap: .5rem;
+}
+#inicio > * {
+	margin: 0px;
+}
+#modal-seleccion-label{
+	grid-area:c;
+}
+#modal-boton{
+	grid-area:g;
+}
+#container-principal,#row-principal{
+	height: 100%;
+	overflow: hidden;
+}
+.heuristico #generaciones-mapa,.heuristico #generaciones-tabla {
+	display: none !important;
+}
+	#generaciones-tabla{
+		height: 750px;
+	}
+#container-principal{
+	width: 90%;
+	display: flex;
+	flex-direction: column;
+	transition: filter 1s;
+}
+	.show + #container-principal {
+		filter: blur(15px);
+	}
+	#individuo-mejor{
+		margin: 1rem auto 0 auto;
+		border-radius: 1rem;
+		border: solid var(--dark);
+		text-align: center;
+		cursor: pointer;
+		width: 20%;
+	}
+		#individuo-mejor-longitud::before{
+			display: block;
+			content: 'Mejor Recorrido hasta ahora:';
+		}
+			.heuristico #individuo-mejor-longitud::before{
+				content: 'Longitud del recorrido:';
+			}
+	.kilometros::after{
+		content:' km.';
+	}
+			#row-principal > .col{
+				height: 100%;
+				overflow-y: auto;overflow-x: hidden;
+				padding-bottom: 1rem;
+
+				display: flex;flex-direction: column;
+			}
+			#generaciones-datos{
+				font-weight: bold;
+				white-space: nowrap;
+			}
+				#generaciones-datos > span {
+					width: 50%;
+					display: inline-block;
+				}
+					#generaciones-datos-mejor{
+						color: green;
+					}
+					#generaciones-datos-peor{
+						color: red;
+					}
+			#controles{
+				/* display: flex;
+				width: 50%;
+				margin: 1rem auto;
+				height: 50px; */
+				margin: auto;
+				display: flex;
+				gap: 1rem;
+			}
+			#generaciones{
+				display: grid;
+				/* overflow:auto; */
+				gap: 0.5rem;
+				scroll-behavior: smooth;
+			}
+			#generaciones span{
+				text-align: center;
+			}
+			#generaciones-header, .generaciones-n-resumen{
+				display: grid;
+				grid-template-columns: 1fr repeat(3,2fr) 1fr;
+				border: solid 1px;
+				padding: .5rem;
+				border-radius: 4px;
+			}
+					#generaciones-header{
+						position: sticky;
+						top: 0;
+						font-weight: bold;
+						color: var(--dark);
+						border: solid var(--dark);
+						z-index: 1;background: white;
+					}
+					.generaciones-n{
+						display: flex;flex-direction: column-reverse;
+					}
+					.generaciones-n-resumen{
+						background:var(--dark);
+						color: white;
+						cursor: pointer;
+						user-select: none;
+					}
+					.generaciones-n-resumen:after{
+						content: '\f078';
+						font-family: "Font Awesome 5 Free";font-weight: bold;
+						text-align: center;
+						transition: transform .5s;
+						margin: auto;
+					}
+					.generaciones-n-individuos-shown + .generaciones-n-resumen::after {
+						transform: rotate(-180deg);
+					}
+					.generaciones-n-individuos{
+						display: grid;
+						/* grid-template-columns: 1fr 6fr 3fr 3fr; */
+						grid-template-columns: 1fr 3fr;
+						height: 0;
+						overflow: hidden;
+					}
+					.generaciones-n-individuos-shown{
+						height: auto;
+					}
+					.generaciones-n-individuos > span {
+						padding: .25rem;
+					}
+					.generaciones-n-individuos-header{
+						font-weight: bold;
+					}
+
+					.generaciones-n-individuo {
+						grid-column: span 2;
+						display: grid;
+						grid-template-columns: 1fr 3fr;
+						cursor: pointer;
+
+						position: relative;
+					}
+						.generaciones-n-individuo:hover::before{
+							content: '';
+							position: absolute;
+							height: 100%;
+							width: 100%;
+							top: 0;
+							left: 0;
+							background: rgba(0,0,0,.3);
+						}
+						.generaciones-n-individuo:nth-child(2n-1)
+						/*,.generaciones-n-individuos > span:nth-child(4n-1) 
+						,.generaciones-n-individuos > span:nth-child(4n-2)
+						,.generaciones-n-individuos > span:nth-child(8n-3) */{
+							background: #EEE;
+						}
+							.generaciones-n-individuo-selected{
+								background:#84bffa !important;
+							}
+			#individuo-mapa-container{
+				display: grid;
+				grid-template: "a b" 1fr "c c"/3fr 2fr;gap: .5rem;
+				height:100%;
+			}
+				#individuo-longitud{
+					grid-area: c;
+					margin: 1rem 0;
+				}
+					.heuristico #individuo-longitud{
+						display: none;
+					}
+				#individuo-recorrido{
+					font-size:smaller;
+				}
+					#individuo-recorrido > li:first-child {
+						font-weight: bold;
+					}
+
+
+					/* Auto generado por una buena pagina muy honesta y laburante */
+
+					.container {
+						display: grid;
+						grid-template-columns: .5fr .5fr;
+						/* grid-template-rows: .5fr 1fr .1fr .5fr; */
+						gap: 0px 0px;
+						grid-auto-flow: row;
+						grid-template-areas:
+						"Heuristica Heuristica"
+						"geneticotitulo geneticotitulo"
+						"genetico_1 genetico_2"
+						"individuos-y-corridas individuos-y-corridas";
+					}
+					  
+					  .individuos-y-corridas { grid-area: individuos-y-corridas; }
+					  
+					  .Heuristica { grid-area: Heuristica; }
+					  
+					  .geneticotitulo { grid-area: geneticotitulo; }
+					  
+					  .genetico_1 { grid-area: genetico_1; }
+					  
+					  .genetico_2 { grid-area: genetico_2; }
+					  
+					  .form-check-input{
+						  margin: 0;
+					  }
+
+					  label[for^="tipoAlgoritmo"]{
+						  position: relative;
+						  bottom: 11px;
+					  }

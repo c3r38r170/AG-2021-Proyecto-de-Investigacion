@@ -1,0 +1,13 @@
+# Mantener la carpeta de javafx11, aunque vacía, ya que los archivos de JavaFX son diferentes para Windows y Linux
+/lib/javafx11/*
+!/lib/javafx11/lib/javafx.properties
+
+# repl.it
+/.replit
+/script.bash
+*.class
+*.draw
+
+#Santiago Abud
+.vscode
+*.pdf
