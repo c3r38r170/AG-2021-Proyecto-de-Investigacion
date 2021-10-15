@@ -33,72 +33,9 @@ public class App extends JFrame {
 	
 	private double sumatoriaPuntuaciones=0;
 	
-	private int tamañoPoblacion=0;
+	private int tamañoPoblacion=10;
 	
 	private WebEngine webEngine;
-
-	public static final String[] PROVINCIAS={
-		"Buenos Aires - Cdad. de Bs. As."
-		,"Córdoba - Córdoba"
-		,"Corrientes - Corrientes"
-		,"Formosa - Formosa"
-		,"Buenos Aires - La Plata"
-		,"La Rioja - La Rioja"
-		,"Mendoza - Mendoza"
-		,"Neuquén - Neuquén"
-		,"Entre Ríos - Paraná"
-		,"Misiones - Posadas"
-		,"Chubut - Rawson"
-		,"Chaco - Resistencia"
-		,"Santa Cruz - Río Gallegos"
-		,"Catamarca - San Fernando del Valle de Catamarca"
-		,"Tucumán - San Miguel de Tucumán"
-		,"Jujuy - San Salvador de Jujuy"
-		,"Salta - Salta"
-		,"San Juan - San Juan"
-		,"San Luis - San Luis"
-		,"Santa Fe - Santa Fe"
-		,"La Pampa - Santa Rosa"
-		,"Santiago del Estero - Santiago del Estero"
-		,"Tierra del Fuego, Antártida e Islas del Atlántico Sur - Ushuaia"
-		,"Río Negro - Viedma"
-	};
-	public static final Integer[][] DISTANCIAS_RAW ={
-			/*23	22	21... */
-		/*1*/{799,2373,939,579,393,749,1005,1282,1334,1080,979,2082,794,1127,834,375,989,985,986,53,933,792,646}
-		/*2*/,{1047,2618,401,577,330,293,412,745,809,517,362,2281,669,1321,919,348,907,466,340,698,824,677}
-		/*3*/,{1527,3131,535,1136,498,969,1039,719,742,633,691,2819,13,1845,291,500,1534,1131,814,830,157}
-		,{1681,3284,629,1293,654,1117,1169,741,750,703,793,2974,161,1999,263,656,1690,1269,927,968}
-		,{789,2350,991,602,444,795,1053,1333,1385,1132,1030,2064,833,1116,857,427,1005,1029,1038}
-		,{1311,2821,311,834,640,435,283,533,600,330,149,2473,802,1548,1098,659,1063,427}
-		,{1019,2435,713,586,775,235,152,957,1023,756,569,2081,1121,1201,1384,790,676}
-		,{479,1762,1286,422,1049,643,824,1591,1658,1370,1182,1410,1529,543,1709,1053}
-		,{1030,2635,566,642,19,574,757,906,959,707,622,2320,498,1345,658}
-		,{1624,3207,827,1293,664,1200,1306,992,1007,924,980,2914,305,1951}
-		,{327,1300,1721,745,1349,1113,1340,2054,2120,1827,1647,975,1843}
-		,{1526,3130,523,1132,495,961,1029,706,729,620,678,2818}
-		,{1294,359,2677,1712,2325,2046,2231,2997,3063,2773,2587}
-		,{1391,2931,166,915,602,540,430,410,477,189}
-		,{1562,3116,141,1088,689,727,612,228,293}
-		,{1855,3408,414,1382,942,1017,874,67}
-		,{1790,3341,353,1316,889,950,808}
-		,{1141,2585,583,686,740,284}
-		,{882,2392,643,412,560}
-		,{1035,2641,547,641}
-		,{477,2044,977}
-		,{1446,3016}
-		,{1605}
-	};
-	public static HashMap<Set<Integer>,Integer> distancias = new HashMap<>();
-
-	public static int obtenerDistanciaEntre(int a,int b){
-		if(a==b)
-			return 0;
-		HashSet<Integer> set = new HashSet<>();
-		set.add(a);
-		set.add(b);
-		return distancias.get(set);
-	}
 
   // Función que sirve para evaluar el desempeño de cada individuo.
 	private static double objetivo(Individuo individuo){
@@ -109,18 +46,6 @@ public class App extends JFrame {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		// Ponemos las distancias en un mapa de conjuntos a enteros, donde los conjuntos son cada par de ciudades.
-		// Usar conjuntos nos permite evitar cargar 2 veces las distancias e ignorar la dirección del viaje.
-		int n=PROVINCIAS.length-1;
-		for(int i=0;i<n;i++){
-			for(int j=0,to=n-i;j<to;j++){
-				Set<Integer> s = new HashSet<>();
-				s.add(i);
-				s.add(n-j);
-				distancias.put(s,DISTANCIAS_RAW[i][j]);
-			}
-		}
-
 		// launch(args);
 		new App();
 	}
@@ -128,6 +53,10 @@ public class App extends JFrame {
 	// @Override
 	// public void start(Stage primaryStage) throws Exception {
 	public App(){
+		reiniciar();
+
+		System.exit(0);
+
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 		JFXPanel jfxPanel = new JFXPanel();
@@ -181,14 +110,12 @@ public class App extends JFrame {
 			);
 			System.out.println(poblacionActual[i]);
 
-			System.exit(0);
-
-			double puntuacion=objetivo(poblacionActual[i]);
-			poblacionActual[i].valorFuncionObjetivo=puntuacion;
-			sumatoriaPuntuaciones+=puntuacion;
+			// double puntuacion=objetivo(poblacionActual[i]);
+			// poblacionActual[i].valorFuncionObjetivo=puntuacion;
+			// sumatoriaPuntuaciones+=puntuacion;
 		}
 		
-		ordenarPoblacion(poblacionActual);
+		// ordenarPoblacion(poblacionActual);
 		mandarGeneracionActual();
 	}
 	
@@ -278,63 +205,7 @@ public class App extends JFrame {
 		Arrays.sort(poblacion);
 	}
 
-	private Individuo algoritmoHeuristico(int cabeceraDeOrigen){
-		int cantidadProvincias = App.PROVINCIAS.length;
-		// Recordamos las ciudades visitadas para no pasar de vuelta.
-		ArrayList<Integer> recorrido = new ArrayList<>();
-		recorrido.add(cabeceraDeOrigen);
-		int longitud = 0;
-
-		int provinciaActual = cabeceraDeOrigen;
-		// Por todas las ciudades que restan visitar, vamos paso a paso viendo cuál está más cerca de nuestra posición actual.
-		for(int i=0,to=cantidadProvincias-1; i < to; i++){
-			ArrayList<Integer[]> distanciasProvincias= new ArrayList<>();
-			for(int j=0; j < cantidadProvincias; j++){
-				if(!recorrido.contains(j)){ // Si no se pasó por esta ciudad, guardar el nombre y la distancia.
-					int distancia = obtenerDistanciaEntre(provinciaActual, j);
-					distanciasProvincias.add(new Integer[]{j,distancia});
-					if(distanciasProvincias.size()==to-i) // Si solo faltan 3 ciudades y ya las encontramos, no tiene sentido seguir fijandose las demás.
-						break;
-				}
-			}
-			if(distanciasProvincias.size()>1) // Si hay una sola ciudad no tiene sentido ordenarlo.
-				Collections.sort(distanciasProvincias,(Integer[] p1, Integer[] p2) -> p1[1].compareTo(p2[1])); // Ordenamos por distancias.
-			// Obtenemos la más cercana.
-			Integer[] provinciaMasCercana=distanciasProvincias.get(0);
-
-			longitud += provinciaMasCercana[1];
-			provinciaActual = provinciaMasCercana[0];
-			recorrido.add(provinciaActual);
-		}
-
-		longitud+=obtenerDistanciaEntre(provinciaActual,cabeceraDeOrigen); // Volvemos a la ciudad de partida.
-		
-		return new Individuo(recorrido, longitud);
-	}
-
 	// API para el frontend.
-
-	// Simulacion de Heuristica
-	public void algoritmoHeuristicoDesde(int cabeceraDeOrigen){
-		mandarHeuristico(algoritmoHeuristico(cabeceraDeOrigen));
-	}
-
-	public void algoritmoHeuristicoPorTodos(){
-		ArrayList<Individuo> recorridosHeuristicos= new ArrayList<>();
-		for(int i=0;i<App.PROVINCIAS.length;i++)
-			recorridosHeuristicos.add(algoritmoHeuristico(i));
-		Collections.sort(recorridosHeuristicos);
-		mandarHeuristico(recorridosHeuristicos.get(0));
-	}
-
-	private void mandarHeuristico(Individuo ind){
-		StringBuilder sb = new StringBuilder("recibirResultadoHeuristico([");
-		for(int p : ind.cromosoma)
-			sb.append(p+",");
-		ejecutarJS(sb.toString()+"],"+ind.longitud+")");
-	}
-	
-	// Simulacion de Genético
 	public void iniciarSimulacion(int cantidadIndividuos, int cantidadCorridas,boolean conElitismo){
 		tamañoPoblacion=cantidadIndividuos;
 		elitismo=conElitismo;
@@ -346,6 +217,7 @@ public class App extends JFrame {
 	}
 
 	private void mandarGeneracionActual(){
+		// TODO
 		String[] poblacionAsJSON=new String[tamañoPoblacion];
 		for (int i = 0; i < tamañoPoblacion; i++)
 			poblacionAsJSON[i]=poblacionActual[i].toJSONObject();

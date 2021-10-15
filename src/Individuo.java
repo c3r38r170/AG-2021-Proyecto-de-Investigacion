@@ -30,21 +30,6 @@ public class Individuo implements Comparable<Individuo>,Cloneable {
 		this.iteraciones = iteraciones;
 	}
 
-	public Individuo(int[] cromosoma,int longitud){
-		guardarCromosomaArray(cromosoma);
-		this.longitud=longitud;
-	}
-
-	public Individuo(ArrayList<Integer> cromosoma){
-		guardarCromosomaArrayList(cromosoma);
-		calcularLongitud();
-	}
-
-	public Individuo(int[] cromosoma){
-		guardarCromosomaArray(cromosoma);
-		calcularLongitud();
-	}
-
 	private void guardarCromosomaArrayList(ArrayList<Integer> cromosoma){
 		this.cromosoma =cromosoma;
 		longitudDelCromosoma =cromosoma.size();
@@ -56,14 +41,6 @@ public class Individuo implements Comparable<Individuo>,Cloneable {
 		longitudDelCromosoma = cromosoma.length;
 	}
 
-	private void calcularLongitud(){
-		int ultimoDestino=cromosoma.get(cromosoma.size()-1);
-		for(int provincia: cromosoma){
-			longitud+=App.obtenerDistanciaEntre(ultimoDestino,provincia);
-			ultimoDestino=provincia;
-		}
-	}
-	
 	public Individuo[] crossover(Individuo pareja){
 		if(this.equals(pareja)){
 			return new Individuo[]{
@@ -108,8 +85,8 @@ public class Individuo implements Comparable<Individuo>,Cloneable {
 		}
 		
 		return new Individuo[]{
-			new Individuo(cromosomaNuevo1)
-			,new Individuo(cromosomaNuevo2)
+			// new Individuo(cromosomaNuevo1)
+			// ,new Individuo(cromosomaNuevo2)
 		};
 	}
 	
@@ -121,8 +98,6 @@ public class Individuo implements Comparable<Individuo>,Cloneable {
 			// Método de Mutación: swapping
 			Collections.swap(cromosoma,gen1,gen2);
 			
-			calcularLongitud();
-
 			return true;
 		} else return false;
 	}
@@ -138,21 +113,18 @@ public class Individuo implements Comparable<Individuo>,Cloneable {
 		return clon;
 	}
 
+	@Override
+	public String toString() {
+		return "Individuo [angulo=" + angulo + ", cantidadDeBordes=" + cantidadDeBordes + ", cantidadDeLineas="
+				+ cantidadDeLineas + ", iteraciones=" + iteraciones + ", reflexion=" + reflexion + "]";
+	}
+
 	public String toJSONObject() {
 		StringBuilder sb = new StringBuilder("{\"longitud\":"+longitud+",\"recorrido\":[");
 		for(int valorGen : cromosoma){
 			sb.append(valorGen+",");
 		}
 		return sb.toString()+"]}";
-	}
-	
-	@Override
-	public String toString(){
-		StringBuilder sb = new StringBuilder("Recorrido de "+longitud+"km:");
-		for(int valorGen : cromosoma){
-			sb.append("\n\t"+App.PROVINCIAS[valorGen]);
-		}
-		return sb.toString();
 	}
 	
 	// Este método se usa para ordenar de mejor a peor.
